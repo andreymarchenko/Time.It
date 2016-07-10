@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Текущие задачи" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Завершенные задачи" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Остановленные задачи" />
-    </group>
-
-    <item android:title="Статистика">
+    <item android:title="Задачи">
         <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/current_tasks"
+                    android:icon="@drawable/ic_menu_camera"
+                    android:title="Текущие задачи" />
+                <item
+                    android:id="@+id/done_tasks"
+                    android:icon="@drawable/ic_menu_gallery"
+                    android:title="Завершенные задачи" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Общее">
+        <menu>
+            <group android:checkableBehavior="single">
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/tasks_statistic"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Статистика" />
+            <item
+                android:id="@+id/my_profile"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Мой профиль" />
+            <item
+                android:id="@+id/advice"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Советы" />
+            </group>
         </menu>
     </item>
 

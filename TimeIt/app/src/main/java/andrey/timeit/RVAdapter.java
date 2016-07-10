@@ -76,8 +76,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.TaskViewHolder> {
 
     }
 
-
-
     List<Task> tasks;
 
     RVAdapter(List<Task> tasks) {

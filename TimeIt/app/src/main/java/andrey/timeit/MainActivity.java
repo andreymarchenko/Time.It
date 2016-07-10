@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,7 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import andrey.timeit.dialog.AddingTaskDialogFragment;
+import andrey.timeit.fragments.AdviceFragment;
+import andrey.timeit.fragments.CurrentTasksFragment;
+import andrey.timeit.fragments.DoneTasksFragment;
 import andrey.timeit.fragments.SplashFragment;
+import andrey.timeit.fragments.StatisticTasksFragment;
+import andrey.timeit.fragments.UserProfileFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AddingTaskDialogFragment.AddingTaskListener {
@@ -63,13 +69,13 @@ public class MainActivity extends AppCompatActivity
         rv = (RecyclerView) findViewById(R.id.rv);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
+        //rv.setLayoutManager(llm);
+       // rv.setHasFixedSize(true);
 
         initializeData();
 
         RVAdapter adapter = new RVAdapter(tasks);
-        rv.setAdapter(adapter);
+        //rv.setAdapter(adapter);
     }
 
     public void runSplash() {
@@ -125,15 +131,41 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        if (id == R.id.current_tasks) {
+            fragmentManager.popBackStack();
+            CurrentTasksFragment currentTasksFragment = new CurrentTasksFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, currentTasksFragment)
+                    .commit();
+        } else if (id == R.id.done_tasks) {
+            fragmentManager.popBackStack();
+            DoneTasksFragment doneTasksFragment = new DoneTasksFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, doneTasksFragment)
+                    .commit();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.tasks_statistic) {
+            fragmentManager.popBackStack();
+            StatisticTasksFragment statisticTasksFragment = new StatisticTasksFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, statisticTasksFragment)
+                    .commit();
+        }
 
-        } else if (id == R.id.nav_slideshow) {
+        else if (id == R.id.my_profile) {
+            fragmentManager.popBackStack();
+            UserProfileFragment userProfileFragment = new UserProfileFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, userProfileFragment)
+                    .commit();
+        }
 
-        } else if (id == R.id.nav_share) {
-
+        else if (id == R.id.advice) {
+            fragmentManager.popBackStack();
+            AdviceFragment adviceFragment = new AdviceFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, adviceFragment)
+                    .commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -143,11 +175,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTaskAdded() {
-        Toast.makeText(this, "Task Added", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Task Added", Toast.LENGTH_LONG).show();
+        Snackbar.make(findViewById(R.id.fab), "Задача добавлена", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     @Override
     public void onTaskAddingCancel() {
-        Toast.makeText(this, "Task Adding cancel", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Task Adding cancel", Toast.LENGTH_LONG).show();
+        Snackbar.make(findViewById(R.id.fab), "Добавление отменено", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 }

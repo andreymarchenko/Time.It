@@ -2,23 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.CurrentTasksFragment">
+    tools:context=".fragments.StatisticTasksFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Current tasks"
+        android:text="Statistic"
         android:textSize="40sp"
-        android:id="@+id/textView1"
+        android:id="@+id/textView3"
         android:layout_gravity="center" />
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:id="@+id/rv">
-    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>
