@@ -16,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +27,19 @@ import andrey.timeit.fragments.DoneTasksFragment;
 import andrey.timeit.fragments.SplashFragment;
 import andrey.timeit.fragments.StatisticTasksFragment;
 import andrey.timeit.fragments.UserProfileFragment;
+import andrey.timeit.model.ModelTask;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AddingTaskDialogFragment.AddingTaskListener {
+
+    public static final int CURRENT_TASK_FRAGMENT_POSITION = 0;
+    public static final int DONE_TASK_FRAGMENT_POSITION = 1;
+
+    CurrentTasksFragment currentTasksFragment;
+    DoneTasksFragment doneTasksFragment;
+    StatisticTasksFragment statisticTasksFragment;
+    UserProfileFragment userProfileFragment;
+    AdviceFragment adviceFragment;
 
     FragmentManager fragmentManager;
 
@@ -66,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        rv = (RecyclerView) findViewById(R.id.rv);
+        //rv = (RecyclerView) findViewById(R.id.rv);
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         //rv.setLayoutManager(llm);
@@ -133,20 +142,20 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.current_tasks) {
             fragmentManager.popBackStack();
-            CurrentTasksFragment currentTasksFragment = new CurrentTasksFragment();
+            currentTasksFragment = new CurrentTasksFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, currentTasksFragment)
                     .commit();
         } else if (id == R.id.done_tasks) {
             fragmentManager.popBackStack();
-            DoneTasksFragment doneTasksFragment = new DoneTasksFragment();
+            doneTasksFragment = new DoneTasksFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, doneTasksFragment)
                     .commit();
 
         } else if (id == R.id.tasks_statistic) {
             fragmentManager.popBackStack();
-            StatisticTasksFragment statisticTasksFragment = new StatisticTasksFragment();
+            statisticTasksFragment = new StatisticTasksFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, statisticTasksFragment)
                     .commit();
@@ -154,7 +163,7 @@ public class MainActivity extends AppCompatActivity
 
         else if (id == R.id.my_profile) {
             fragmentManager.popBackStack();
-            UserProfileFragment userProfileFragment = new UserProfileFragment();
+            userProfileFragment = new UserProfileFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, userProfileFragment)
                     .commit();
@@ -162,7 +171,7 @@ public class MainActivity extends AppCompatActivity
 
         else if (id == R.id.advice) {
             fragmentManager.popBackStack();
-            AdviceFragment adviceFragment = new AdviceFragment();
+            adviceFragment = new AdviceFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, adviceFragment)
                     .commit();
@@ -174,7 +183,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTaskAdded() {
+    public void onTaskAdded(ModelTask newTask) {
+        currentTasksFragment.addTask(newTask);
         //Toast.makeText(this, "Task Added", Toast.LENGTH_LONG).show();
         Snackbar.make(findViewById(R.id.fab), "Задача добавлена", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
