@@ -14,11 +14,9 @@ import andrey.timeit.R;
  */
 public class AdviceFragment extends Fragment {
 
-
     public AdviceFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -26,5 +24,4 @@ public class AdviceFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_advice, container, false);
     }
-
 }

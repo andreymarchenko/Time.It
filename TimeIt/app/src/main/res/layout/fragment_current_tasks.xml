@@ -2,18 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.CurrentTasksFragment">
+    tools:context=".fragments.CurrentTasksFragment"
+    >
 
     <!-- TODO: Update blank fragment layout -->
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Current tasks"
-        android:textSize="40sp"
-        android:id="@+id/textView1"
-        android:layout_gravity="center" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_height="match_parent"

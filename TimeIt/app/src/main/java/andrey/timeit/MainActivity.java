@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         //rv.setLayoutManager(llm);
-       // rv.setHasFixedSize(true);
+        // rv.setHasFixedSize(true);
 
         initializeData();
 
@@ -141,35 +141,33 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.current_tasks) {
-            fragmentManager.popBackStack();
+            //fragmentManager.popBackStack();
             currentTasksFragment = new CurrentTasksFragment();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, currentTasksFragment)
+                    .replace(R.id.for_adapter, currentTasksFragment)
                     .commit();
         } else if (id == R.id.done_tasks) {
-            fragmentManager.popBackStack();
+            //fragmentManager.popBackStack();
             doneTasksFragment = new DoneTasksFragment();
+
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, doneTasksFragment)
+                    .replace(R.id.for_adapter, doneTasksFragment)
                     .commit();
 
         } else if (id == R.id.tasks_statistic) {
             fragmentManager.popBackStack();
             statisticTasksFragment = new StatisticTasksFragment();
+
             fragmentManager.beginTransaction()
                     .replace(R.id.container, statisticTasksFragment)
                     .commit();
-        }
-
-        else if (id == R.id.my_profile) {
+        } else if (id == R.id.my_profile) {
             fragmentManager.popBackStack();
             userProfileFragment = new UserProfileFragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, userProfileFragment)
                     .commit();
-        }
-
-        else if (id == R.id.advice) {
+        } else if (id == R.id.advice) {
             fragmentManager.popBackStack();
             adviceFragment = new AdviceFragment();
             fragmentManager.beginTransaction()

@@ -30,13 +30,12 @@ public class CurrentTasksAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void addItem(item item) {
         items.add(item);
-        notifyItemInserted(getItemCount() - 1);
+        notifyItemInserted(getItemCount()-1);
     }
 
     public void addItem(int location, item item) {
         items.add(location, item);
         notifyItemInserted(location);
-
     }
 
     @Override

@@ -42,7 +42,6 @@ public class AddingTaskDialogFragment extends DialogFragment {
             addingTaskListener = (AddingTaskListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + "must implement AddingTaskListener");
-
         }
     }
 

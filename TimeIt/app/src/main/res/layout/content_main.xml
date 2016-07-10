@@ -9,6 +9,7 @@
     android:paddingRight="3dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="andrey.timeit.MainActivity"
+    android:id="@+id/for_adapter"
     tools:showIn="@layout/app_bar_main">
 
 </android.support.design.widget.CoordinatorLayout>
