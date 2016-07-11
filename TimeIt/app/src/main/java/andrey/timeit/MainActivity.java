@@ -20,23 +20,26 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import andrey.timeit.dialog.AddingTaskDialogFragment;
+import andrey.timeit.dialog.ATDialog;
 import andrey.timeit.fragments.AdviceFragment;
-import andrey.timeit.fragments.CurrentTasksFragment;
-import andrey.timeit.fragments.DoneTasksFragment;
+import andrey.timeit.fragments.CTFragment;
+import andrey.timeit.fragments.DTFragment;
 import andrey.timeit.fragments.SplashFragment;
 import andrey.timeit.fragments.StatisticTasksFragment;
+import andrey.timeit.fragments.TKFragment;
 import andrey.timeit.fragments.UserProfileFragment;
-import andrey.timeit.model.ModelTask;
+import andrey.timeit.model.MTask;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AddingTaskDialogFragment.AddingTaskListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ATDialog.AddingTaskListener,
+        CTFragment.OnTaskDoneListener,
+        DTFragment.OnTaskRestoreListener {
 
-    public static final int CURRENT_TASK_FRAGMENT_POSITION = 0;
-    public static final int DONE_TASK_FRAGMENT_POSITION = 1;
+    public static int currentInstance = 0;
 
-    CurrentTasksFragment currentTasksFragment;
-    DoneTasksFragment doneTasksFragment;
+    TKFragment currentTasksFragment;
+    TKFragment doneTasksFragment;
     StatisticTasksFragment statisticTasksFragment;
     UserProfileFragment userProfileFragment;
     AdviceFragment adviceFragment;
@@ -54,6 +57,11 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         fragmentManager = getFragmentManager();
+        currentTasksFragment = new CTFragment();
+        doneTasksFragment = new DTFragment();
+        statisticTasksFragment = new StatisticTasksFragment();
+        userProfileFragment = new UserProfileFragment();
+        adviceFragment = new AdviceFragment();
 
         runSplash();
 
@@ -61,8 +69,10 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment addingTaskDialogFragment = new AddingTaskDialogFragment();
-                addingTaskDialogFragment.show(fragmentManager, "addingTaskDialogFragment");
+
+                    DialogFragment addingTaskDialogFragment = new ATDialog();
+                    addingTaskDialogFragment.show(fragmentManager, "addingTaskDialogFragment");
+
             }
         });
 
@@ -141,37 +151,36 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.current_tasks) {
+
             //fragmentManager.popBackStack();
-            currentTasksFragment = new CurrentTasksFragment();
             fragmentManager.beginTransaction()
-                    .replace(R.id.for_adapter, currentTasksFragment)
-                    .commit();
+                    .replace(R.id.content_main, currentTasksFragment)
+                    .addToBackStack(null).commit();
+
         } else if (id == R.id.done_tasks) {
             //fragmentManager.popBackStack();
-            doneTasksFragment = new DoneTasksFragment();
 
             fragmentManager.beginTransaction()
-                    .replace(R.id.for_adapter, doneTasksFragment)
-                    .commit();
+                    .replace(R.id.content_main, doneTasksFragment)
+                    .addToBackStack(null).commit();
 
         } else if (id == R.id.tasks_statistic) {
-            fragmentManager.popBackStack();
-            statisticTasksFragment = new StatisticTasksFragment();
 
+            //fragmentManager.popBackStack();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, statisticTasksFragment)
+                    .replace(R.id.content_main, statisticTasksFragment)
                     .commit();
         } else if (id == R.id.my_profile) {
-            fragmentManager.popBackStack();
-            userProfileFragment = new UserProfileFragment();
+
+            //fragmentManager.popBackStack();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, userProfileFragment)
+                    .replace(R.id.content_main, userProfileFragment)
                     .commit();
         } else if (id == R.id.advice) {
-            fragmentManager.popBackStack();
-            adviceFragment = new AdviceFragment();
+
+            //fragmentManager.popBackStack();
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, adviceFragment)
+                    .replace(R.id.content_main, adviceFragment)
                     .commit();
         }
 
@@ -181,7 +190,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTaskAdded(ModelTask newTask) {
+    public void onTaskAdded(MTask newTask) {
         currentTasksFragment.addTask(newTask);
         //Toast.makeText(this, "Task Added", Toast.LENGTH_LONG).show();
         Snackbar.make(findViewById(R.id.fab), "Задача добавлена", Snackbar.LENGTH_LONG)
@@ -193,5 +202,15 @@ public class MainActivity extends AppCompatActivity
         //Toast.makeText(this, "Task Adding cancel", Toast.LENGTH_LONG).show();
         Snackbar.make(findViewById(R.id.fab), "Добавление отменено", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+    }
+
+    @Override
+    public void onTaskDone(MTask task) {
+        doneTasksFragment.addTask(task);
+    }
+
+    @Override
+    public void onTaskRestore(MTask task) {
+        currentTasksFragment.addTask(task);
     }
 }

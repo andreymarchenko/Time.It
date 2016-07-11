@@ -4,4 +4,19 @@
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">#FF5252</color>
     <color name="white">#FFFF</color>
+
+
+    <color name="category_work">#F44336</color>
+    <color name="category_family">#4CAF50</color>
+    <color name="category_rest">#2196F3</color>
+    <color name="category_sport">#009688</color>
+
+    <color name="category_work_selected">#FFCDD2</color>
+    <color name="category_family_selected">#C8E6C9</color>
+    <color name="category_rest_selected">#BBDEFB</color>
+    <color name="category_sport_selected">#B2DFDB</color>
+
+    <color name="gray_50">#FAFAFA</color>
+    <color name="gray_200">#EEEEEE</color>
+
 </resources>
