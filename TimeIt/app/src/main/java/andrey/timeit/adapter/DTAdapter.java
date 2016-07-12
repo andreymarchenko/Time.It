@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import andrey.timeit.R;
 import andrey.timeit.Utils;
-import andrey.timeit.fragments.TKFragment;
+import andrey.timeit.fragments.TFragment;
 import andrey.timeit.model.MTask;
 import andrey.timeit.model.item;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DTAdapter extends TAdapter {
 
 
-    public DTAdapter(TKFragment taskFragment) {
+    public DTAdapter(TFragment taskFragment) {
         super(taskFragment);
     }
 
@@ -62,12 +62,14 @@ public class DTAdapter extends TAdapter {
             taskViewHolder.title.setTextColor(resources.getColor(R.color.primary_text_disabled_material_light));
             taskViewHolder.date.setTextColor(resources.getColor(R.color.secondary_text_disabled_material_light));
             taskViewHolder.category.setColorFilter(resources.getColor(task.getCategoryColor()));
-            taskViewHolder.category.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
+            taskViewHolder.category.setImageResource(R.drawable.ic_check_circle_white_24dp);
 
             taskViewHolder.category.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     task.setStatus(MTask.STATUS_CURRENT);
+
+                    getTaskFragment().activity.dbHelper.update().status(task.getTimeStamp(), MTask.STATUS_CURRENT);
 
                     itemView.setBackgroundColor(resources.getColor(R.color.gray_50));
 

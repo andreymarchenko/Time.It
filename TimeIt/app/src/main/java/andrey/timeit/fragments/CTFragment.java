@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import andrey.timeit.DataBase.DBManager;
 import andrey.timeit.R;
 import andrey.timeit.adapter.CTAdapter;
 import andrey.timeit.model.MTask;
@@ -18,7 +22,7 @@ import andrey.timeit.model.MTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CTFragment extends TKFragment {
+public class CTFragment extends TFragment {
 
     public CTFragment() {
         // Required empty public constructor
@@ -56,6 +60,17 @@ public class CTFragment extends TKFragment {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    @Override
+    public void addTaskFromDB() {
+        List<MTask> tasks = new ArrayList<>();
+        tasks.addAll(activity.dbHelper.query().getTasks(DBManager.SELECTION_STATUS + " OR "
+                + DBManager.SELECTION_STATUS, new String[]{Integer.toString(MTask.STATUS_CURRENT),
+                Integer.toString(MTask.STATUS_OVERDUE)}, DBManager.TASK_DATE_COLUMN));
+        for (int i = 0; i < tasks.size(); i++) {
+            addTask(tasks.get(i), false);
+        }
     }
 
     @Override

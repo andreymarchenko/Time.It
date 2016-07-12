@@ -80,6 +80,8 @@ public class CTAdapter extends TAdapter {
                 public void onClick(View v) {
                     task.setStatus(MTask.STATUS_DONE);
 
+                    getTaskFragment().activity.dbHelper.update().status(task.getTimeStamp(), MTask.STATUS_DONE);
+
                     itemView.setBackgroundColor(resources.getColor(R.color.gray_200));
 
                     taskViewHolder.title.setTextColor(resources.getColor(R.color.primary_text_disabled_material_light));

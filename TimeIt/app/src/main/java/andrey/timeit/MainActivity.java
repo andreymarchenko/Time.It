@@ -20,31 +20,33 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import andrey.timeit.dialog.ATDialog;
+import andrey.timeit.DataBase.DBManager;
+import andrey.timeit.dialog.ATDFragment;
 import andrey.timeit.fragments.AdviceFragment;
 import andrey.timeit.fragments.CTFragment;
 import andrey.timeit.fragments.DTFragment;
-import andrey.timeit.fragments.SplashFragment;
+import andrey.timeit.fragments.SFragment;
 import andrey.timeit.fragments.StatisticTasksFragment;
-import andrey.timeit.fragments.TKFragment;
+import andrey.timeit.fragments.TFragment;
 import andrey.timeit.fragments.UserProfileFragment;
 import andrey.timeit.model.MTask;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ATDialog.AddingTaskListener,
+        ATDFragment.AddingTaskListener,
         CTFragment.OnTaskDoneListener,
         DTFragment.OnTaskRestoreListener {
 
-    public static int currentInstance = 0;
+    FragmentManager fragmentManager;
 
-    TKFragment currentTasksFragment;
-    TKFragment doneTasksFragment;
+    TFragment currentTasksFragment;
+    TFragment doneTasksFragment;
+
     StatisticTasksFragment statisticTasksFragment;
     UserProfileFragment userProfileFragment;
     AdviceFragment adviceFragment;
 
-    FragmentManager fragmentManager;
+    public DBManager dbHelper;
 
     RecyclerView rv;
     private List<Task> tasks;
@@ -56,9 +58,17 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        dbHelper = new DBManager(getApplicationContext());
+
         fragmentManager = getFragmentManager();
-        currentTasksFragment = new CTFragment();
+
         doneTasksFragment = new DTFragment();
+        fragmentManager.beginTransaction().add(R.id.content_main, doneTasksFragment).commit();
+        currentTasksFragment = new CTFragment();
+        fragmentManager.beginTransaction().add(R.id.content_main, currentTasksFragment).commit();
+
+             //   .replace(R.id.content_main, currentTasksFragment)
+             //   .commit();
         statisticTasksFragment = new StatisticTasksFragment();
         userProfileFragment = new UserProfileFragment();
         adviceFragment = new AdviceFragment();
@@ -69,10 +79,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                    DialogFragment addingTaskDialogFragment = new ATDialog();
+                    DialogFragment addingTaskDialogFragment = new ATDFragment();
                     addingTaskDialogFragment.show(fragmentManager, "addingTaskDialogFragment");
-
             }
         });
 
@@ -98,7 +106,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void runSplash() {
-        SplashFragment splashFragment = new SplashFragment();
+        SFragment splashFragment = new SFragment();
         fragmentManager.beginTransaction()
                 .replace(R.id.app_bar_layout_main, splashFragment)
                 .addToBackStack(null).commit();
@@ -152,17 +160,17 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.current_tasks) {
 
-            //fragmentManager.popBackStack();
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main, currentTasksFragment)
-                    .addToBackStack(null).commit();
+                    .addToBackStack("added")
+                    .commit();
 
         } else if (id == R.id.done_tasks) {
-            //fragmentManager.popBackStack();
 
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main, doneTasksFragment)
-                    .addToBackStack(null).commit();
+                    .addToBackStack("adasd")
+                    .commit();
 
         } else if (id == R.id.tasks_statistic) {
 
@@ -191,7 +199,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTaskAdded(MTask newTask) {
-        currentTasksFragment.addTask(newTask);
+        currentTasksFragment.addTask(newTask, true);
         //Toast.makeText(this, "Task Added", Toast.LENGTH_LONG).show();
         Snackbar.make(findViewById(R.id.fab), "Задача добавлена", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
@@ -206,11 +214,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTaskDone(MTask task) {
-        doneTasksFragment.addTask(task);
+        doneTasksFragment.addTask(task, false);
     }
 
     @Override
     public void onTaskRestore(MTask task) {
-        currentTasksFragment.addTask(task);
+        currentTasksFragment.addTask(task, false);
     }
 }

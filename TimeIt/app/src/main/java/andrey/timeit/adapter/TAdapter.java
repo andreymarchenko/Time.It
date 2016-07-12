@@ -7,7 +7,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import andrey.timeit.fragments.TKFragment;
+import andrey.timeit.fragments.TFragment;
 import andrey.timeit.model.item;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -17,9 +17,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public abstract class TAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<item> items;
 
-    TKFragment taskFragment;
+    TFragment taskFragment;
 
-    public TAdapter(TKFragment taskFragment) {
+    public TAdapter(TFragment taskFragment) {
         this.taskFragment = taskFragment;
         items = new ArrayList<>();
     }
@@ -63,7 +63,7 @@ public abstract class TAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
-    public TKFragment getTaskFragment() {
+    public TFragment getTaskFragment() {
         return taskFragment;
     }
 }

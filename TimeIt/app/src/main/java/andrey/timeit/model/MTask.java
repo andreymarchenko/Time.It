@@ -1,5 +1,7 @@
 package andrey.timeit.model;
 
+import java.util.Date;
+
 import andrey.timeit.R;
 
 /**
@@ -12,7 +14,7 @@ public class MTask implements item {
     public static final int CATEGORY_REST = 2;
     public static final int CATEGORY_SPORT = 3;
 
-    public static final String[] CATEGORY_LEVELS = {"Work", "Family", "Rest", "Sport"};
+    public static final String[] CATEGORY_LEVELS = {"Работа", "Семья", "Отдых", "Спорт"};
 
     public static final int STATUS_OVERDUE = 0;
     public static final int STATUS_CURRENT = 1;
@@ -23,16 +25,19 @@ public class MTask implements item {
 
     private String title;
     private long date;
+    private long timeStamp;
 
     public MTask() {
         this.status = -1;
+        this.timeStamp = new Date().getTime();
     }
 
-    public MTask(String title, long date, int category, int status) {
+    public MTask(String title, long date, int category, int status, long timeStamp) {
         this.title = title;
         this.date = date;
         this.category = category;
         this.status = status;
+        this.timeStamp = timeStamp;
     }
 
     public int getCategoryColor() {
@@ -100,4 +105,11 @@ public class MTask implements item {
         this.status = status;
     }
 
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 }
