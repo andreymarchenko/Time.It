@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import andrey.timeit.DataBase.DBManager;
+import andrey.timeit.dataBase.DBManager;
 import andrey.timeit.R;
 import andrey.timeit.adapter.DTAdapter;
 import andrey.timeit.model.MTask;

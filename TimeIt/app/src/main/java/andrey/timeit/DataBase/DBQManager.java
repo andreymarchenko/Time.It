@@ -1,4 +1,4 @@
-package andrey.timeit.DataBase;
+package andrey.timeit.dataBase;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,25 +18,44 @@ public class DBQManager {
         this.database = database;
     }
 
+    public MTask getTask(long timeStamp) {
+        MTask modelTask = null;
+        Cursor c1 = database.query(DBManager.TASKS_TABLE, null, DBManager.SELECTION_TIME_STAMP,
+                new String[]{Long.toString(timeStamp)}, null, null, null);
+
+        if (c1.moveToFirst()) {
+            String title = c1.getString(c1.getColumnIndex(DBManager.TASK_TITLE_COLUMN));
+            long date = c1.getLong(c1.getColumnIndex(DBManager.TASK_DATE_COLUMN));
+            int priority = c1.getInt(c1.getColumnIndex(DBManager.TASK_CATEGORY_COLUMN));
+            int status = c1.getInt(c1.getColumnIndex(DBManager.TASK_STATUS_COLUMN));
+
+            modelTask = new MTask(title, date, priority, status, timeStamp);
+        }
+        c1.close();
+
+        return modelTask;
+
+    }
+
     public List<MTask> getTasks(String selection, String[] selectionArgs, String orderBy) {
         List<MTask> tasks = new ArrayList<>();
 
-        Cursor c = database.query(DBManager.TASKS_TABLE, null,
+        Cursor c2 = database.query(DBManager.TASKS_TABLE, null,
                 selection, selectionArgs, null, null, orderBy);
 
-        if (c.moveToFirst()) {
+        if (c2.moveToFirst()) {
             do {
-                String title = c.getString(c.getColumnIndex(DBManager.TASK_TITLE_COLUMN));
-                long date = c.getLong(c.getColumnIndex(DBManager.TASK_DATE_COLUMN));
-                int priority = c.getInt(c.getColumnIndex(DBManager.TASK_CATEGORY_COLUMN));
-                int status = c.getInt(c.getColumnIndex(DBManager.TASK_STATUS_COLUMN));
-                long timeStamp = c.getLong(c.getColumnIndex(DBManager.TASK_TIME_STAMP_COLUMN));
+                String title = c2.getString(c2.getColumnIndex(DBManager.TASK_TITLE_COLUMN));
+                long date = c2.getLong(c2.getColumnIndex(DBManager.TASK_DATE_COLUMN));
+                int priority = c2.getInt(c2.getColumnIndex(DBManager.TASK_CATEGORY_COLUMN));
+                int status = c2.getInt(c2.getColumnIndex(DBManager.TASK_STATUS_COLUMN));
+                long timeStamp = c2.getLong(c2.getColumnIndex(DBManager.TASK_TIME_STAMP_COLUMN));
 
                 MTask modelTask = new MTask(title, date, priority, status, timeStamp);
                 tasks.add(modelTask);
-            } while (c.moveToNext());
+            } while (c2.moveToNext());
         }
-        c.close();
+        c2.close();
 
         return tasks;
     }

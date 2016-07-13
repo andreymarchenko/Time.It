@@ -20,7 +20,7 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import andrey.timeit.DataBase.DBManager;
+import andrey.timeit.dataBase.DBManager;
 import andrey.timeit.dialog.ATDFragment;
 import andrey.timeit.fragments.AdviceFragment;
 import andrey.timeit.fragments.CTFragment;
@@ -62,13 +62,10 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager = getFragmentManager();
 
-        doneTasksFragment = new DTFragment();
-        fragmentManager.beginTransaction().add(R.id.content_main, doneTasksFragment).commit();
         currentTasksFragment = new CTFragment();
         fragmentManager.beginTransaction().add(R.id.content_main, currentTasksFragment).commit();
-
-             //   .replace(R.id.content_main, currentTasksFragment)
-             //   .commit();
+        doneTasksFragment = new DTFragment();
+        fragmentManager.beginTransaction().add(R.id.content_main, doneTasksFragment).commit();
         statisticTasksFragment = new StatisticTasksFragment();
         userProfileFragment = new UserProfileFragment();
         adviceFragment = new AdviceFragment();

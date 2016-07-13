@@ -1,4 +1,4 @@
-package andrey.timeit.DataBase;
+package andrey.timeit.dataBase;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;

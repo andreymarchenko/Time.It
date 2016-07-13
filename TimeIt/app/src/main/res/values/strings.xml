@@ -16,6 +16,9 @@
     <string name="dialog_cancel">Закрыть</string>>
     <string name="dialog_error_empty_title">Пожалуйста, введите название задачи</string>>
 
+    <string name="dialog_removing_message">Вы действительно хотите удалить эту задачу?</string>string>
+    <string name="task_removed">Удалено</string>
+
     <string name="task_title">Название</string>>
     <string name="task_date">Дата</string>>
     <string name="task_time">Время</string>>

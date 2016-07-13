@@ -65,7 +65,7 @@ public class MTask implements item {
     }
 
     @Override
-    public boolean IsTask() {
+    public boolean isTask() {
         return true;
     }
 

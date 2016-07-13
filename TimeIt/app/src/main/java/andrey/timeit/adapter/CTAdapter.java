@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,7 @@ public class CTAdapter extends TAdapter {
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         item item = items.get(position);
 
-        if (item.IsTask()) {
+        if (item.isTask()) {
             viewHolder.itemView.setEnabled(true);
             final MTask task = (MTask) item;
             final TaskViewHolder taskViewHolder = (TaskViewHolder) viewHolder;
@@ -68,6 +69,8 @@ public class CTAdapter extends TAdapter {
             }
             itemView.setVisibility(View.VISIBLE);
 
+            taskViewHolder.category.setEnabled(true);
+
             itemView.setBackgroundColor(resources.getColor(R.color.gray_50));
 
             taskViewHolder.title.setTextColor(resources.getColor(R.color.primary_text_default_material_light));
@@ -75,9 +78,25 @@ public class CTAdapter extends TAdapter {
             taskViewHolder.category.setColorFilter(resources.getColor(task.getCategoryColor()));
             taskViewHolder.category.setImageResource(R.drawable.ic_checkbox_blank_circle_white_48dp);
 
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                Handler handler = new Handler();
+
+                @Override
+                public boolean onLongClick(View v) {
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            getTaskFragment().removeTaskDialog(taskViewHolder.getLayoutPosition());
+                        }
+                    }, 300);
+                    return true;
+                }
+            });
+
             taskViewHolder.category.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    taskViewHolder.category.setEnabled(false);
                     task.setStatus(MTask.STATUS_DONE);
 
                     getTaskFragment().activity.dbHelper.update().status(task.getTimeStamp(), MTask.STATUS_DONE);
@@ -155,7 +174,7 @@ public class CTAdapter extends TAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (getItem(position).IsTask()) {
+        if (getItem(position).isTask()) {
             return TYPE_TASK;
         } else return TYPE_SEPARATOR;
     }
