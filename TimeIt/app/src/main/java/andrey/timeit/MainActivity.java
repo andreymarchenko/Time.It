@@ -2,11 +2,13 @@ package andrey.timeit;
 
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,67 +19,117 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import andrey.timeit.dataBase.DBManager;
-import andrey.timeit.dialog.ATDFragment;
+import andrey.timeit.alarm.AlarmHelper;
+import andrey.timeit.dataBase.DBHelper;
+import andrey.timeit.dialog.AddingTaskDialogFragment;
+import andrey.timeit.dialog.EditTaskDialogFragment;
 import andrey.timeit.fragments.AdviceFragment;
-import andrey.timeit.fragments.CTFragment;
-import andrey.timeit.fragments.DTFragment;
-import andrey.timeit.fragments.SFragment;
+import andrey.timeit.fragments.CurrentTasksFragment;
+import andrey.timeit.fragments.DoneTasksFragment;
+import andrey.timeit.fragments.SplashFragment;
 import andrey.timeit.fragments.StatisticTasksFragment;
-import andrey.timeit.fragments.TFragment;
+import andrey.timeit.fragments.TaskFragment;
 import andrey.timeit.fragments.UserProfileFragment;
-import andrey.timeit.model.MTask;
+import andrey.timeit.model.ModelDuration;
+import andrey.timeit.model.ModelTask;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ATDFragment.AddingTaskListener,
-        CTFragment.OnTaskDoneListener,
-        DTFragment.OnTaskRestoreListener {
+        AddingTaskDialogFragment.AddingTaskListener,
+        CurrentTasksFragment.OnTaskDoneListener,
+        DoneTasksFragment.OnTaskRestoreListener,
+        EditTaskDialogFragment.EditingTaskListener {
 
     FragmentManager fragmentManager;
 
-    TFragment currentTasksFragment;
-    TFragment doneTasksFragment;
+    TaskFragment currentTasksFragment;
+    TaskFragment doneTasksFragment;
 
     StatisticTasksFragment statisticTasksFragment;
     UserProfileFragment userProfileFragment;
     AdviceFragment adviceFragment;
 
-    public DBManager dbHelper;
+    FloatingActionButton fab;
+    Toolbar toolbar;
+
+    int currentPosition = 0;
+
+    SearchView searchView;
+
+    public DBHelper dbHelper;
 
     RecyclerView rv;
     private List<Task> tasks;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        dbHelper = new DBManager(getApplicationContext());
+        AlarmHelper.getInstance().init(getApplicationContext());
+
+        dbHelper = new DBHelper(getApplicationContext());
 
         fragmentManager = getFragmentManager();
+        ModelDuration modelDuration = new ModelDuration();
+        dbHelper.saveDuration(modelDuration);
 
-        currentTasksFragment = new CTFragment();
-        fragmentManager.beginTransaction().add(R.id.content_main, currentTasksFragment).commit();
-        doneTasksFragment = new DTFragment();
-        fragmentManager.beginTransaction().add(R.id.content_main, doneTasksFragment).commit();
         statisticTasksFragment = new StatisticTasksFragment();
-        userProfileFragment = new UserProfileFragment();
+        fragmentManager.beginTransaction().add(R.id.content_main, statisticTasksFragment).commit();
         adviceFragment = new AdviceFragment();
+        fragmentManager.beginTransaction().add(R.id.content_main, adviceFragment).commit();
+        doneTasksFragment = new DoneTasksFragment();
+        fragmentManager.beginTransaction().add(R.id.content_main, doneTasksFragment).commit();
+        currentTasksFragment = new CurrentTasksFragment();
+        fragmentManager.beginTransaction().add(R.id.content_main, currentTasksFragment).commit();
+        toolbar.setTitle("Текущие задачи");
 
         runSplash();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    DialogFragment addingTaskDialogFragment = new ATDFragment();
-                    addingTaskDialogFragment.show(fragmentManager, "addingTaskDialogFragment");
+                switch (currentPosition) {
+                    case 0: {
+                        DialogFragment addingTaskDialogFragment = new AddingTaskDialogFragment();
+                        addingTaskDialogFragment.show(fragmentManager, "addingTaskDialogFragment");
+                        break;
+                    }
+                    case 1: {
+
+                    }
+                }
+            }
+        });
+
+        searchView = (SearchView) findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                currentTasksFragment.findTasks(newText);
+                doneTasksFragment.findTasks(newText);
+                return false;
             }
         });
 
@@ -100,10 +152,25 @@ public class MainActivity extends AppCompatActivity
 
         RVAdapter adapter = new RVAdapter(tasks);
         //rv.setAdapter(adapter);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StartApp.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        StartApp.activityPaused();
     }
 
     public void runSplash() {
-        SFragment splashFragment = new SFragment();
+        SplashFragment splashFragment = new SplashFragment();
         fragmentManager.beginTransaction()
                 .replace(R.id.app_bar_layout_main, splashFragment)
                 .addToBackStack(null).commit();
@@ -156,13 +223,21 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.current_tasks) {
-
+            toolbar.setTitle("Текущие задачи");
+            currentPosition = 0;
+            fab.setImageResource(R.drawable.plus);
+            fab.show();
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main, currentTasksFragment)
                     .addToBackStack("added")
                     .commit();
 
         } else if (id == R.id.done_tasks) {
+            toolbar.setTitle("Завершенные задачи");
+            currentPosition = 0;
+            fab.setImageResource(R.drawable.plus);
+            fab.show();
+            //fab.setImageResource(R.drawable.ic_mode_edit_white_24dp);
 
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main, doneTasksFragment)
@@ -170,20 +245,23 @@ public class MainActivity extends AppCompatActivity
                     .commit();
 
         } else if (id == R.id.tasks_statistic) {
+            toolbar.setTitle("Статистика");
+            statisticTasksFragment = new StatisticTasksFragment();
+            fragmentManager.beginTransaction().add(R.id.content_main, statisticTasksFragment).commit();
+            currentPosition = 1;
+            fab.hide();
 
-            //fragmentManager.popBackStack();
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main, statisticTasksFragment)
+                    .addToBackStack("adasd")
                     .commit();
-        } else if (id == R.id.my_profile) {
 
-            //fragmentManager.popBackStack();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_main, userProfileFragment)
-                    .commit();
         } else if (id == R.id.advice) {
-
-            //fragmentManager.popBackStack();
+            toolbar.setTitle("Советы");
+            adviceFragment = new AdviceFragment();
+            fragmentManager.beginTransaction().add(R.id.content_main, adviceFragment).commit();
+            currentPosition = 1;
+            fab.hide();
             fragmentManager.beginTransaction()
                     .replace(R.id.content_main, adviceFragment)
                     .commit();
@@ -195,7 +273,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTaskAdded(MTask newTask) {
+    public void onTaskAdded(ModelTask newTask) {
         currentTasksFragment.addTask(newTask, true);
         //Toast.makeText(this, "Task Added", Toast.LENGTH_LONG).show();
         Snackbar.make(findViewById(R.id.fab), "Задача добавлена", Snackbar.LENGTH_LONG)
@@ -210,12 +288,58 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onTaskDone(MTask task) {
+    public void onTaskDone(ModelTask task) {
         doneTasksFragment.addTask(task, false);
     }
 
     @Override
-    public void onTaskRestore(MTask task) {
+    public void onTaskRestore(ModelTask task) {
         currentTasksFragment.addTask(task, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://andrey.timeit/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://andrey.timeit/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
+    @Override
+    public void onTaskEdited(ModelTask updatedTask) {
+        currentTasksFragment.updateTask(updatedTask);
+        dbHelper.update().task(updatedTask);
     }
 }

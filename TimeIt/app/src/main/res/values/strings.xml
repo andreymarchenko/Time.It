@@ -11,16 +11,25 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="done_tasks">Выполненные задачи</string>>
 
+    <string name="dialog_editing_title">Редактирование задачи</string>
+
     <string name="dialog_title">Добавление задачи</string>>
     <string name="dialog_ok">ОК</string>>
     <string name="dialog_cancel">Закрыть</string>>
+    <string name="repeal_adding_task">Отменить</string>>
     <string name="dialog_error_empty_title">Пожалуйста, введите название задачи</string>>
 
     <string name="dialog_removing_message">Вы действительно хотите удалить эту задачу?</string>string>
     <string name="task_removed">Удалено</string>
 
-    <string name="task_title">Название</string>>
-    <string name="task_date">Дата</string>>
-    <string name="task_time">Время</string>>
+    <string name="task_title">Название</string>
+    <string name="task_date">Дата</string>
+    <string name="task_time">Время</string>
+
+    <string name="separator_overdue">Overdue</string>
+    <string name="separator_today">Today</string>
+    <string name="separator_tomorrow">Tomorrow</string>
+    <string name="separator_future">Future</string>
+
 
 </resources>

@@ -5,12 +5,179 @@
     tools:context=".fragments.StatisticTasksFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Statistic"
-        android:textSize="40sp"
-        android:id="@+id/textView3"
-        android:layout_gravity="center" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/information_place"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:text="Работа"
+            android:textSize="20dp"
+            android:textColor="@color/primary_text_default_material_light"
+            android:id="@+id/work_category_text"
+            />
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Часть времени, потраченная Вами на работу, учебу и т.д."
+            android:textSize="15dp"
+            android:id="@+id/work_category_annotation"
+            android:layout_below="@+id/work_category_text"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_toRightOf="@+id/work_category_annotation"
+            android:layout_marginEnd="3dp"
+            android:textSize="16dp"
+            android:textColor="@color/primary_text_default_material_light"
+            android:id="@+id/work_category_view"
+            android:layout_below="@+id/work_category_text"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:text="Семья"
+            android:textSize="18dp"
+            android:textColor="@color/primary_text_default_material_light"
+            android:id="@+id/family_category_text"
+            android:layout_below="@+id/work_category_annotation"
+            />
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="Часть времени, которую Вы провели вместе с семьей, например: чаепитие, семейный поход в кино"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="16dp"
+            android:textSize="16dp"
+            android:id="@+id/family_category_annotation"
+            android:layout_below="@+id/family_category_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/family_category_annotation"
+            android:textSize="16dp"
+            android:id="@+id/family_category_view"
+            android:textColor="@color/primary_text_default_material_light"
+            android:layout_below="@+id/family_category_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Отдых"
+            android:layout_marginLeft="16dp"
+            android:textSize="18dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/primary_text_default_material_light"
+            android:id="@+id/rest_category_text"
+            android:layout_below="@+id/family_category_annotation" />
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="Часть времени, которую Вы провели вне стен офиса, Вашего учебного заведения и т.д."
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="16dp"
+            android:textSize="16dp"
+            android:id="@+id/rest_category_annotation"
+            android:layout_below="@+id/rest_category_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:id="@+id/rest_category_view"
+            android:textColor="@color/primary_text_default_material_light"
+            android:layout_below="@+id/rest_category_text"
+            android:layout_toRightOf="@+id/rest_category_annotation"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Спорт"
+            android:layout_marginLeft="16dp"
+            android:textSize="18dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/primary_text_default_material_light"
+            android:id="@+id/sport_category_text"
+            android:layout_below="@+id/rest_category_annotation" />
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="Часть времени, которую Вы посвятили игре в футбол, походу в спортзал, дайвингу и т.д."
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="16dp"
+            android:textSize="16dp"
+            android:id="@+id/sport_category_annotation"
+            android:layout_below="@+id/sport_category_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/sport_category_annotation"
+            android:textSize="16dp"
+            android:textColor="@color/primary_text_default_material_light"
+            android:id="@+id/sport_category_view"
+            android:layout_below="@+id/sport_category_text"
+             />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="Личный коэффициент"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:textSize="18dp"
+            android:id="@+id/coefficient"
+            android:textColor="@color/primary_text_default_material_light"
+            android:layout_below="@+id/sport_category_annotation" />
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:text="Коэффициент, который некоторым образом Вас описывает, поиогает нам оценивать Вашу деятельность"
+            android:layout_marginLeft="16dp"
+            android:textSize="16dp"
+            android:layout_marginTop="2dp"
+            android:id="@+id/coefficient_annotation"
+            android:layout_below="@+id/coefficient"
+            />
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textSize="16dp"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/primary_text_default_material_light"
+            android:id="@+id/coefficient_instance"
+            android:layout_toRightOf="@+id/coefficient_annotation"
+            android:layout_below="@+id/coefficient"
+            />
+
+    </RelativeLayout>
 
 </FrameLayout>

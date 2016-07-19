@@ -23,10 +23,6 @@
                 android:icon="@drawable/ic_menu_share"
                 android:title="Статистика" />
             <item
-                android:id="@+id/my_profile"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Мой профиль" />
-            <item
                 android:id="@+id/advice"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Советы" />
