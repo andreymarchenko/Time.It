@@ -15,20 +15,10 @@
         android:id="@+id/textView10"
         android:layout_width="153dp"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="User name"
+        android:textSize="20dp"
+        android:text="Time.it"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_toEndOf="@+id/imageView10"/>
-
-    <ImageView
-        android:id="@+id/imageView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@drawable/tor"
+        android:layout_gravity="center_vertical"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 

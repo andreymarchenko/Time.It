@@ -6,12 +6,13 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Advice"
-        android:textSize="40sp"
-        android:id="@+id/textView5"
-        android:layout_gravity="center" />
+    <android.support.v7.widget.RecyclerView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/rv_advice"
+        android:scrollbars="vertical"
+        android:clipToPadding="false"
+        >
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>
